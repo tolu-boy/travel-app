@@ -11,7 +11,7 @@ export default function Header() {
       <div className="flex items-center justify-between gap-4">
         {/* Logo and Search */}
         <div className="flex items-center gap-3 flex-1">
-          <Image src="/logo.svg" alt="Logo" width={40} height={40} />
+          <Image src="/icons/logo.svg" alt="Logo" width={40} height={40} />
 
           {/* Search Input */}
           <div className="relative w-62">
@@ -30,22 +30,26 @@ export default function Header() {
 
         {/* Navigation Icons */}
         <div className="flex items-center gap-2">
-          <NavItem href="/" icon="/House.svg" label="Home" />
+          <NavItem href="/" icon="/icons/House.svg" label="Home" />
           <NavItem
             href="/dashboard"
-            icon="/ChartPieSlice.svg"
+            icon="/icons/ChartPieSlice.svg"
             label="Dashboard"
           />
-          <NavItem href="/wallet" icon="/Wallet.svg" label="Wallet" />
-          <NavItem href="/plan-trip" icon="/ListChecks.svg" label="Plan Trip" />
+          <NavItem href="/wallet" icon="/icons/Wallet.svg" label="Wallet" />
+          <NavItem
+            href="/plan-trip"
+            icon="/icons/ListChecks.svg"
+            label="Plan Trip"
+          />
           <NavItem
             href="/commission"
-            icon="/HandCoins.svg"
+            icon="/icons/HandCoins.svg"
             label="Commission for life"
           />
         </div>
 
-        <div className="h-12 w-px bg-[#98A2B3] mx-2"></div>
+        <div className="h-10 w-px bg-[#98A2B3] mx-2"></div>
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
@@ -55,15 +59,15 @@ export default function Header() {
 
           <NavItem
             href="/notifications"
-            icon="/Bell.svg"
+            icon="/icons/Bell.svg"
             label="Notification"
           />
-          <NavItem href="/cart" icon="/Basket.svg" label="Cart" />
-          <NavItem href="/create" icon="/PlusSquare.svg" label="Create" />
+          <NavItem href="/cart" icon="/icons/Basket.svg" label="Cart" />
+          <NavItem href="/create" icon="/icons/PlusSquare.svg" label="Create" />
 
           <button className="flex items-center gap-2">
             <Image
-              src="/avatar.svg"
+              src="/images/avatar.svg"
               alt="User"
               width={32}
               height={32}
