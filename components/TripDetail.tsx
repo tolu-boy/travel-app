@@ -8,12 +8,16 @@ import CategoryCard from "./CategoryCard";
 import FlightCard from "@/components/FlightCard";
 import HotelCard from "./HotelCard";
 import ActivityCard from "@/components/ActivityCard";
+import { useItineraryStore } from "@/store/itineraryStore";
+import FlightSearchModal from "./FlightSearchModal";
 
 export default function TripDetail() {
   const [activeTab, setActiveTab] = useState("all");
   const handleAddActivities = () => console.log("Activities clicked");
   const handleAddHotels = () => console.log("Hotels clicked");
   const handleAddFlights = () => console.log("Flights clicked");
+
+  const [isFlightModalOpen, setIsFlightModalOpen] = useState(false);
 
   const sampleImages = [
     "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
@@ -151,7 +155,10 @@ export default function TripDetail() {
               </span>{" "}
               Flights
             </h3>
-            <Button className="text-[#0D6EFD] text-sm bg-white hover:bg-white/45">
+            <Button
+              onClick={() => setIsFlightModalOpen(true)}
+              className="text-[#0D6EFD] text-sm bg-white hover:bg-white/45"
+            >
               Add Flights
             </Button>
           </div>
