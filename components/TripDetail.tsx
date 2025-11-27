@@ -1,6 +1,8 @@
+
+
 "use client";
 
-import { Ellipsis, MoveLeft, UserPlus, X } from "lucide-react";
+import { Ellipsis, MoveLeft, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
@@ -10,22 +12,49 @@ import HotelCard from "./HotelCard";
 import ActivityCard from "@/components/ActivityCard";
 import { useItineraryStore } from "@/store/itineraryStore";
 import FlightSearchModal from "./FlightSearchModal";
+import EmptyRequestCard from "./EmptyRequestCard";
 
 export default function TripDetail() {
-  const [activeTab, setActiveTab] = useState("all");
-  const handleAddActivities = () => console.log("Activities clicked");
-  const handleAddHotels = () => console.log("Hotels clicked");
-  const handleAddFlights = () => console.log("Flights clicked");
-
   const [isFlightModalOpen, setIsFlightModalOpen] = useState(false);
+  const [isHotelModalOpen, setIsHotelModalOpen] = useState(false);
+  const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
+
+  // Get data from Zustand store
+  const {
+    flights,
+    hotels,
+    activities,
+    addFlight,
+    removeFlight,
+    removeHotel,
+    removeActivity,
+  } = useItineraryStore();
+
+  const handleAddFlight = (flight: any) => {
+    addFlight(flight);
+    console.log("Flight added:", flight);
+  };
+
+  const handleAddActivities = () => {
+    setIsActivityModalOpen(true);
+  };
+
+  const handleAddHotels = () => {
+    setIsHotelModalOpen(true);
+  };
+
+  const handleAddFlights = () => {
+    setIsFlightModalOpen(true);
+  };
 
   const sampleImages = [
     "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
     "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&h=300&fit=crop",
     "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop",
   ];
+
   return (
-    <div className="bg-white rounded-xl shadow-sm py-2 px-6 space-y-2 ">
+    <div className="bg-white rounded-xl shadow-sm py-2 px-6 space-y-2">
       {/* Trip Header with Beach Background */}
       <div className="pt-5">
         <div className="relative w-full rounded-sm overflow-hidden mb-2">
@@ -44,7 +73,7 @@ export default function TripDetail() {
         </div>
 
         {/* Date & Actions Bar */}
-        <div className="flex justify-between items-center ">
+        <div className="flex justify-between items-center">
           {/* Trip Info */}
           <div className="bg-[#FEF4E6] text-[#7A4504] px-3 py-1 rounded-md text-xs font-medium">
             📅 21 March 2024 → 2 April 2024
@@ -61,7 +90,6 @@ export default function TripDetail() {
           </div>
         </div>
       </div>
-      {/* ✅ END WRAPPER */}
 
       {/* Trip Title and Details */}
       <div className="space-y-8">
@@ -78,9 +106,8 @@ export default function TripDetail() {
               height={10}
               src="/images/box.svg"
               alt="Traveler"
-              className="w-5  rounded-full"
+              className="w-5 rounded-full"
             />
-
             <Image
               width={10}
               height={10}
@@ -92,9 +119,9 @@ export default function TripDetail() {
         </div>
       </div>
 
-      {/* ✅ category card */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-1 max-w-3xl pb-5">
-        {/* 1. Activities */}
+      {/* Category Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-5">
+        {/* Activities */}
         <CategoryCard
           title="Activities"
           description="Build, personalize, and optimize your itineraries with our trip planner."
@@ -106,7 +133,7 @@ export default function TripDetail() {
           onClick={handleAddActivities}
         />
 
-        {/* 2. Hotels */}
+        {/* Hotels */}
         <CategoryCard
           title="Hotels"
           description="Build, personalize, and optimize your itineraries with our trip planner."
@@ -118,7 +145,7 @@ export default function TripDetail() {
           onClick={handleAddHotels}
         />
 
-        {/* 3. Flights */}
+        {/* Flights */}
         <CategoryCard
           title="Flights"
           description="Build, personalize, and optimize your itineraries with our trip planner."
@@ -146,13 +173,13 @@ export default function TripDetail() {
             <h3 className="font-semibold flex items-center gap-2">
               <span>
                 <Image
-                  width={10}
-                  height={10}
+                  width={20}
+                  height={20}
                   src="/icons/AirplaneInFlight.svg"
-                  alt="Traveler"
-                  className="w-5 h-5 rounded-full"
+                  alt="Flights"
+                  className="w-5 h-5"
                 />
-              </span>{" "}
+              </span>
               Flights
             </h3>
             <Button
@@ -163,104 +190,154 @@ export default function TripDetail() {
             </Button>
           </div>
 
-          {/* Flight Items */}
-          {[1, 2].map((i) => (
-            // <FlightCard key={i} />
-
-            <FlightCard
-              key={i}
-              airline="American Airlines"
-              flightNumber="AA-829"
-              flightClass="First Class"
-              departureTime="08:35"
-              arrivalTime="09:55"
-              date="Sun, 20 Aug"
-              duration="1h 45m"
-              origin="LOS"
-              destination="SIN"
-              price="₦ 123,450.00"
-              baggage="20kg"
-              cabinBaggage="8kg"
-              onClose={() => console.log("Close clicked")}
+          {/* Flight Items - Show from Zustand store */}
+          {flights.length === 0 ? (
+            <EmptyRequestCard
+              image="/icons/AirplaneInFlight.svg"
+              buttonText="Add Flight"
             />
-          ))}
+          ) : (
+            // <div className="bg-white border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+            //   <div className="text-gray-400 text-4xl mb-3">✈️</div>
+            //   <p className="text-gray-600 mb-3">No flights added yet</p>
+            //   <Button
+            //     onClick={() => setIsFlightModalOpen(true)}
+            //     className="bg-[#0D6EFD] hover:bg-blue-700 text-white"
+            //   >
+            //     Add Your First Flight
+            //   </Button>
+            // </div>
+            <div className="space-y-3">
+              {flights.map((flight: any) => (
+                <FlightCard
+                  key={flight.id}
+                  airline={flight.airline}
+                  flightNumber={flight.flightNumber}
+                  flightClass={flight.flightClass}
+                  departureTime={flight.departureTime}
+                  arrivalTime={flight.arrivalTime}
+                  date={flight.date}
+                  duration={flight.duration}
+                  origin={flight.origin}
+                  destination={flight.destination}
+                  price={flight.price}
+                  baggage={flight.baggage}
+                  cabinBaggage={flight.cabinBaggage}
+                  onClose={() => removeFlight(flight.id)}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Hotels Section */}
-        <div className="bg-gray-800 text-white rounded-lg p-4 space-y-3">
+        <div className="bg-[#344054] text-white rounded-lg p-4 space-y-3 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold">🏨 Hotels</h3>
-            <Button className="bg-white hover:bg-gray-100 text-gray-800 text-sm">
+            <h3 className="font-semibold flex items-center gap-2">
+              <span className="text-xl">🏨</span> Hotels
+            </h3>
+            <Button
+              onClick={() => setIsHotelModalOpen(true)}
+              className="bg-white hover:bg-gray-100 text-gray-800 text-sm"
+            >
               Add Hotels
             </Button>
           </div>
 
-          {/* Hotel Items */}
-          {[1, 2].map((i) => (
-            <HotelCard
-              key={i}
-              name="Riviera Resort, Lekki"
-              address="18, Kenneth Agbakuru Street, Off Access Bank Admiralty Way, Lekki Phase1"
-              rating={8.5}
-              reviewCount={436}
-              roomType="King size room"
-              price="₦ 123,450.00"
-              totalPrice="NGN 560,000"
-              nights={10}
-              rooms={1}
-              facilities={["Pool", "Bar"]}
-              checkIn="20-04-2024"
-              checkOut="29-04-2024"
-              images={sampleImages}
-              onClose={() => console.log("Close clicked")}
+          {/* Hotel Items - Show from Zustand store */}
+          {hotels.length === 0 ? (
+            <EmptyRequestCard
+              image="/icons/AirplaneInFlight.svg"
+              buttonText="Add Flight"
             />
-          ))}
-        </div>
-      </div>
-
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="bg-blue-600 rounded-xl p-8">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2 text-white">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+          ) : (
+            <div className="space-y-3">
+              {hotels.map((hotel: any) => (
+                <HotelCard
+                  key={hotel.id}
+                  name={hotel.name}
+                  address={hotel.address}
+                  rating={hotel.rating}
+                  reviewCount={hotel.reviewCount}
+                  roomType={hotel.roomType}
+                  price={hotel.price}
+                  totalPrice={hotel.totalPrice}
+                  nights={hotel.nights}
+                  rooms={hotel.rooms}
+                  facilities={hotel.facilities}
+                  checkIn={hotel.checkIn}
+                  checkOut={hotel.checkOut}
+                  images={hotel.images || sampleImages}
+                  onClose={() => removeHotel(hotel.id)}
                 />
-              </svg>
-              <h1 className="text-2xl font-bold">Activities</h1>
+              ))}
             </div>
-            <Button className="bg-white text-blue-600 hover:bg-gray-100 font-medium">
+          )}
+        </div>
+
+        {/* Activities Section */}
+        <div className="bg-[#0D6EFD] rounded-lg p-4 space-y-3">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-white flex items-center gap-2">
+              <span className="text-xl">🎭</span> Activities
+            </h3>
+            <Button
+              onClick={() => setIsActivityModalOpen(true)}
+              className="bg-white text-[#0D6EFD] hover:bg-gray-100 font-medium"
+            >
               Add Activities
             </Button>
           </div>
 
-          {/* Activity Cards */}
-          <ActivityCard
-            name="The Museum of Modern Art"
-            description="Works from Van Gogh to Warhol & beyond plus a sculpture garden, 2 cafes & The modern restaurant"
-            rating={4.5}
-            reviewCount={436}
-            duration="1 Hour"
-            price="₦ 123,450.00"
-            dateTime="10:30 AM on Mar 19"
-            whatsIncluded="Admission to the Empire State Building"
-            dayLabel="Day 1"
-            images={sampleImages}
-            onClose={() => console.log("Close clicked")}
-            onIncrement={() => console.log("Increment")}
-            onDecrement={() => console.log("Decrement")}
-          />
+          {/* Activity Items - Show from Zustand store */}
+          {activities.length === 0 ? (
+            <EmptyRequestCard
+              image="/icons/AirplaneInFlight.svg"
+              buttonText="Add Flight"
+            />
+          ) : (
+            <div className="space-y-3">
+              {activities.map((activity: any) => (
+                <ActivityCard
+                  key={activity.id}
+                  name={activity.name}
+                  description={activity.description}
+                  rating={activity.rating}
+                  reviewCount={activity.reviewCount}
+                  duration={activity.duration}
+                  price={activity.price}
+                  dateTime={activity.dateTime}
+                  whatsIncluded={activity.whatsIncluded}
+                  dayLabel={activity.dayLabel}
+                  images={activity.images || sampleImages}
+                  onClose={() => removeActivity(activity.id)}
+                  onIncrement={() => console.log("Increment")}
+                  onDecrement={() => console.log("Decrement")}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Modals */}
+      <FlightSearchModal
+        isOpen={isFlightModalOpen}
+        onClose={() => setIsFlightModalOpen(false)}
+        onAddFlight={handleAddFlight}
+      />
+
+      {/* TODO: Add these modals when created */}
+      {/* <HotelSearchModal
+        isOpen={isHotelModalOpen}
+        onClose={() => setIsHotelModalOpen(false)}
+        onAddHotel={handleAddHotel}
+      />
+      <ActivitySearchModal
+        isOpen={isActivityModalOpen}
+        onClose={() => setIsActivityModalOpen(false)}
+        onAddActivity={handleAddActivity}
+      /> */}
     </div>
   );
 }
