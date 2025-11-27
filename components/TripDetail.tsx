@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { Ellipsis, MoveLeft, UserPlus } from "lucide-react";
@@ -10,16 +8,22 @@ import CategoryCard from "./CategoryCard";
 import FlightCard from "@/components/FlightCard";
 import HotelCard from "./HotelCard";
 import ActivityCard from "@/components/ActivityCard";
-import { useItineraryStore } from "@/store/itineraryStore";
+import {
+  useItineraryStore,
+  Flight,
+  Hotel,
+  Activity,
+} from "@/store/itineraryStore";
 import FlightSearchModal from "./FlightSearchModal";
 import EmptyRequestCard from "./EmptyRequestCard";
-
+import ActivitySearchModal from "./ActivitySearchModal";
+import HotelSearchModal from "./HotelSearchModal";
+import { categories, sampleImages } from "@/data/TripConstants";
 export default function TripDetail() {
-  const [isFlightModalOpen, setIsFlightModalOpen] = useState(false);
-  const [isHotelModalOpen, setIsHotelModalOpen] = useState(false);
-  const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
+  const [openModal, setOpenModal] = useState<
+    "flight" | "hotel" | "activity" | null
+  >(null);
 
-  // Get data from Zustand store
   const {
     flights,
     hotels,
@@ -28,30 +32,24 @@ export default function TripDetail() {
     removeFlight,
     removeHotel,
     removeActivity,
+    addHotel,
+    addActivity,
   } = useItineraryStore();
 
-  const handleAddFlight = (flight: any) => {
+  const handleAddFlight = (flight: Flight) => {
     addFlight(flight);
     console.log("Flight added:", flight);
   };
 
-  const handleAddActivities = () => {
-    setIsActivityModalOpen(true);
+  const handleAddHotel = (hotel: Hotel) => {
+    addHotel(hotel);
+    console.log("Hotel added:", hotel);
   };
 
-  const handleAddHotels = () => {
-    setIsHotelModalOpen(true);
+  const handleAddActivity = (activity: Activity) => {
+    addActivity(activity);
+    console.log("Activity added:", activity);
   };
-
-  const handleAddFlights = () => {
-    setIsFlightModalOpen(true);
-  };
-
-  const sampleImages = [
-    "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop",
-  ];
 
   return (
     <div className="bg-white rounded-xl shadow-sm py-2 px-6 space-y-2">
@@ -120,42 +118,16 @@ export default function TripDetail() {
       </div>
 
       {/* Category Cards */}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-5">
-        {/* Activities */}
-        <CategoryCard
-          title="Activities"
-          description="Build, personalize, and optimize your itineraries with our trip planner."
-          buttonText="Add Activities"
-          bgColor="bg-[#000031]"
-          textColor="text-white"
-          btnBgColor="bg-[#0D6EFD]"
-          btnTextColor="text-white"
-          onClick={handleAddActivities}
-        />
-
-        {/* Hotels */}
-        <CategoryCard
-          title="Hotels"
-          description="Build, personalize, and optimize your itineraries with our trip planner."
-          buttonText="Add Hotels"
-          bgColor="bg-[#E7F0FF]"
-          textColor="text-gray-900"
-          btnBgColor="bg-[#0D6EFD]"
-          btnTextColor="text-white"
-          onClick={handleAddHotels}
-        />
-
-        {/* Flights */}
-        <CategoryCard
-          title="Flights"
-          description="Build, personalize, and optimize your itineraries with our trip planner."
-          buttonText="Add Flights"
-          bgColor="bg-[#0D6EFD]"
-          textColor="text-white"
-          btnBgColor="bg-white"
-          btnTextColor="text-[#0D6EFD]"
-          onClick={handleAddFlights}
-        />
+        {categories.map((cat) => (
+          <CategoryCard
+            buttonText={cat.btnText}
+            key={cat.title}
+            {...cat}
+            description="Build, personalize, and optimize your itineraries with our trip planner."
+          />
+        ))}
       </div>
 
       {/* Trip Itineraries Section */}
@@ -183,7 +155,8 @@ export default function TripDetail() {
               Flights
             </h3>
             <Button
-              onClick={() => setIsFlightModalOpen(true)}
+              // onClick={() => setIsFlightModalOpen(true)}
+              onClick={() => setOpenModal("flight")}
               className="text-[#0D6EFD] text-sm bg-white hover:bg-white/45"
             >
               Add Flights
@@ -195,20 +168,12 @@ export default function TripDetail() {
             <EmptyRequestCard
               image="/icons/AirplaneInFlight.svg"
               buttonText="Add Flight"
+              // onClick={() => setIsFlightModalOpen(true)}
+              onClick={() => setOpenModal("flight")}
             />
           ) : (
-            // <div className="bg-white border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-            //   <div className="text-gray-400 text-4xl mb-3">✈️</div>
-            //   <p className="text-gray-600 mb-3">No flights added yet</p>
-            //   <Button
-            //     onClick={() => setIsFlightModalOpen(true)}
-            //     className="bg-[#0D6EFD] hover:bg-blue-700 text-white"
-            //   >
-            //     Add Your First Flight
-            //   </Button>
-            // </div>
             <div className="space-y-3">
-              {flights.map((flight: any) => (
+              {flights.map((flight: Flight) => (
                 <FlightCard
                   key={flight.id}
                   airline={flight.airline}
@@ -237,7 +202,7 @@ export default function TripDetail() {
               <span className="text-xl">🏨</span> Hotels
             </h3>
             <Button
-              onClick={() => setIsHotelModalOpen(true)}
+              onClick={() => setOpenModal("hotel")}
               className="bg-white hover:bg-gray-100 text-gray-800 text-sm"
             >
               Add Hotels
@@ -252,7 +217,7 @@ export default function TripDetail() {
             />
           ) : (
             <div className="space-y-3">
-              {hotels.map((hotel: any) => (
+              {hotels.map((hotel: Hotel) => (
                 <HotelCard
                   key={hotel.id}
                   name={hotel.name}
@@ -282,7 +247,8 @@ export default function TripDetail() {
               <span className="text-xl">🎭</span> Activities
             </h3>
             <Button
-              onClick={() => setIsActivityModalOpen(true)}
+              // onClick={() => setIsActivityModalOpen(true)}
+              onClick={() => setOpenModal("activity")}
               className="bg-white text-[#0D6EFD] hover:bg-gray-100 font-medium"
             >
               Add Activities
@@ -297,7 +263,7 @@ export default function TripDetail() {
             />
           ) : (
             <div className="space-y-3">
-              {activities.map((activity: any) => (
+              {activities.map((activity: Activity) => (
                 <ActivityCard
                   key={activity.id}
                   name={activity.name}
@@ -321,23 +287,24 @@ export default function TripDetail() {
       </div>
 
       {/* Modals */}
+
       <FlightSearchModal
-        isOpen={isFlightModalOpen}
-        onClose={() => setIsFlightModalOpen(false)}
+        isOpen={openModal === "flight"}
+        onClose={() => setOpenModal(null)}
         onAddFlight={handleAddFlight}
       />
 
       {/* TODO: Add these modals when created */}
-      {/* <HotelSearchModal
-        isOpen={isHotelModalOpen}
-        onClose={() => setIsHotelModalOpen(false)}
+      <HotelSearchModal
+        isOpen={openModal === "hotel"}
+        onClose={() => setOpenModal(null)}
         onAddHotel={handleAddHotel}
       />
       <ActivitySearchModal
-        isOpen={isActivityModalOpen}
-        onClose={() => setIsActivityModalOpen(false)}
+        isOpen={openModal === "activity"}
+        onClose={() => setOpenModal(null)}
         onAddActivity={handleAddActivity}
-      /> */}
+      />
     </div>
   );
 }
