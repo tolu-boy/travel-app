@@ -1,5 +1,3 @@
-
-
 "use client";
 import { ChevronsUpDown } from "lucide-react";
 import SidebarItem from "./SidebarItem";
@@ -25,8 +23,8 @@ const items = [
 
 export default function Sidebar() {
   return (
-    <aside className="min-h-screen bg-white border-r m-4 px-4 py-6 flex flex-col gap-5 rounded-sm">
-      {/* Menu */}
+    <aside className="w-64 shrink-0 h-[calc(100vh-2rem)] sticky top-4 bg-white border-r m-4 px-4 py-6 flex flex-col gap-5 rounded-sm overflow-y-auto">
+      {/* Menu added */}
       <nav className="flex flex-col gap-2">
         {items.map((item, idx) => (
           <SidebarItem
@@ -41,8 +39,10 @@ export default function Sidebar() {
       {/* Bottom button */}
       <div className="mt-auto mb-10 py-5 px-3 bg-gray-100 rounded-md flex items-center gap-3 cursor-pointer">
         <div className="p-2 bg-blue-500 text-white rounded">Go</div>
-        <span className="text-sm font-medium text-[#647995]">Personal Account</span>
-        <ChevronsUpDown  className="text-[#647995]"/>
+        <span className="text-sm font-medium text-[#647995]">
+          Personal Account
+        </span>
+        <ChevronsUpDown className="text-[#647995]" />
       </div>
     </aside>
   );
