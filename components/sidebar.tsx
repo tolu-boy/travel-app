@@ -24,7 +24,7 @@ const items = [
 export default function Sidebar() {
   return (
     <aside className="w-64 shrink-0 h-[calc(100vh-2rem)] sticky top-4 bg-white border-r m-4 px-4 py-6 flex flex-col gap-5 rounded-sm overflow-y-auto">
-      {/* Menu */}
+      {/* Menu added */}
       <nav className="flex flex-col gap-2">
         {items.map((item, idx) => (
           <SidebarItem
