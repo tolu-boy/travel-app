@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import ReactQueryProvider from "@/components/ReactQueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
   description: "Travel app",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,17 +26,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
-        {/* Top Header */}
-        <Header />
+          {/* Top Header */}
+          <Header />
 
-        {/* Sidebar + Page Content Wrapper */}
-        <div className="flex">
-          <Sidebar />
+          {/* Sidebar + Page Content Wrapper */}
+          <div className="flex">
+            <Sidebar />
 
-          {/* Main Content Area */}
-          <main className="flex-1 p-4 min-h-screen">{children}</main>
-        </div>
+            <ReactQueryProvider>
+            <main className="flex-1 p-4 min-h-screen">{children}</main>
+          </ReactQueryProvider>
+            {/* Main Content Area */}
+          </div>
       </body>
     </html>
+
   );
 }
