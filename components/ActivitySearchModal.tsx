@@ -65,7 +65,7 @@ const ActivitySearchModal: React.FC<ActivitySearchModalProps> = ({
         whatsIncluded: "Admission ticket",
         dayLabel: "Day 1",
         images: [
-          "https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=400",
+          'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop'
         ],
       },
     ];

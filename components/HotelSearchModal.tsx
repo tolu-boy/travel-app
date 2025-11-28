@@ -64,7 +64,7 @@ const HotelSearchModal: React.FC<HotelSearchModalProps> = ({
               totalPrice: 'NGN 560,000',
               nights: 10,
               rooms: parseInt(searchParams.rooms),
-              facilities: ['Pool', 'Bar', 'WiFi', 'Gym'],
+              facilities: ['Pool', 'Bar', ],
               checkIn: searchParams.checkIn || '20-04-2024',
               checkOut: searchParams.checkOut || '29-04-2024',
               images: [
@@ -82,7 +82,7 @@ const HotelSearchModal: React.FC<HotelSearchModalProps> = ({
               totalPrice: 'NGN 750,000',
               nights: 10,
               rooms: parseInt(searchParams.rooms),
-              facilities: ['Pool', 'Spa', 'Restaurant', 'Bar'],
+              facilities: ['Pool', 'Bar', ],
               checkIn: searchParams.checkIn || '20-04-2024',
               checkOut: searchParams.checkOut || '29-04-2024',
               images: [
@@ -100,7 +100,7 @@ const HotelSearchModal: React.FC<HotelSearchModalProps> = ({
               totalPrice: 'NGN 450,000',
               nights: 10,
               rooms: parseInt(searchParams.rooms),
-              facilities: ['WiFi', 'Restaurant', 'Parking'],
+              facilities: ['Pool', 'Bar', ],
               checkIn: searchParams.checkIn || '20-04-2024',
               checkOut: searchParams.checkOut || '29-04-2024',
               images: [
