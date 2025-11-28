@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import ReactQueryProvider from "@/components/ReactQueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,8 +32,9 @@ export default function RootLayout({
         <div className="flex">
           <Sidebar />
 
-          {/* Main Content Area */}
-          <main className="flex-1 p-4 min-h-screen">{children}</main>
+          <ReactQueryProvider>
+            <main className="flex-1 p-4 min-h-screen">{children}</main>
+          </ReactQueryProvider>
         </div>
       </body>
     </html>

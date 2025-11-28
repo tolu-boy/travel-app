@@ -90,7 +90,7 @@ const FlightSearchModal: React.FC<FlightSearchModalProps> = ({
 
       {/* Modal */}
       <div className="relative bg-white rounded-lg shadow-xl w-[95vw] max-h-[90vh] overflow-y-auto p-6 z-50">
-        
+
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold">Search Flights</h2>

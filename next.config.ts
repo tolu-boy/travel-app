@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
 
   images: {
+    domains: ['cf.bstatic.com', 'images.unsplash.com'], // add any external domains you use
     remotePatterns: [
       {
         protocol: "https",
