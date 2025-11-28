@@ -166,9 +166,8 @@ export default function TripDetail() {
           {/* Flight Items - Show from Zustand store */}
           {flights.length === 0 ? (
             <EmptyRequestCard
-              image="/icons/AirplaneInFlight.svg"
+              type="flight"
               buttonText="Add Flight"
-              // onClick={() => setIsFlightModalOpen(true)}
               onClick={() => setOpenModal("flight")}
             />
           ) : (
@@ -199,11 +198,20 @@ export default function TripDetail() {
         <div className="bg-[#344054] text-white rounded-lg p-4 space-y-3 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold flex items-center gap-2">
-              <span className="text-xl">🏨</span> Hotels
+              <span className="text-xl">
+                <Image
+                  src="/icons/hotelIcon.svg"
+                  alt="hotel icon"
+                  width={0}
+                  height={0}
+                  className="w-full h-full object-cover"
+                />
+              </span>{" "}
+              Hotels
             </h3>
             <Button
               onClick={() => setOpenModal("hotel")}
-              className="bg-white hover:bg-gray-100 text-gray-800 text-sm"
+              className="bg-white hover:bg-gray-100 text-gray-800 text-sm rounded-sm"
             >
               Add Hotels
             </Button>
@@ -212,14 +220,15 @@ export default function TripDetail() {
           {/* Hotel Items - Show from Zustand store */}
           {hotels.length === 0 ? (
             <EmptyRequestCard
-              image="/icons/AirplaneInFlight.svg"
-              buttonText="Add Flight"
+              type="hotel"
+              buttonText="Add Hotel"
+              onClick={() => setOpenModal("hotel")}
             />
           ) : (
             <div className="space-y-3">
-              {hotels.map((hotel: Hotel) => (
+              {hotels.map((hotel: Hotel, id: number) => (
                 <HotelCard
-                  key={hotel.id}
+                  key={id}
                   name={hotel.name}
                   address={hotel.address}
                   rating={hotel.rating}
@@ -244,12 +253,19 @@ export default function TripDetail() {
         <div className="bg-[#0D6EFD] rounded-lg p-4 space-y-3">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-white flex items-center gap-2">
-              <span className="text-xl">🎭</span> Activities
+              <Image
+                src="/icons/activityIcon.svg"
+                alt="hotel icon"
+                width={0}
+                height={0}
+                className="w-full h-full object-cover"
+              />
+              Activities
             </h3>
             <Button
               // onClick={() => setIsActivityModalOpen(true)}
               onClick={() => setOpenModal("activity")}
-              className="bg-white text-[#0D6EFD] hover:bg-gray-100 font-medium"
+              className="bg-white text-[#0D6EFD] hover:bg-gray-100 font-medium rounded-sm"
             >
               Add Activities
             </Button>
@@ -258,8 +274,9 @@ export default function TripDetail() {
           {/* Activity Items - Show from Zustand store */}
           {activities.length === 0 ? (
             <EmptyRequestCard
-              image="/icons/AirplaneInFlight.svg"
-              buttonText="Add Flight"
+              type="activity"
+              buttonText="Add Activities"
+              onClick={() => setOpenModal("activity")}
             />
           ) : (
             <div className="space-y-3">
