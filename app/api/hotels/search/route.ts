@@ -36,7 +36,7 @@ export async function POST(request: Request) {
   
   console.log('Request body:', body);
   if (!dest_id || !search_type || !checkIn || !checkOut || !rooms || !adults) {
-    console.error('Missing required fields', { dest_id, search_type, checkIn, checkOut, rooms, adults });
+    // console.error('Missing required fields', { dest_id, search_type, checkIn, checkOut, rooms, adults });
     return NextResponse.json({ error: 'Missing required fields', hotels: [] }, { status: 400 });
   }
   try {
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     
     const data: BookingComResponse  = await response.json();
 
-    console.log('Booking.com API response:', data);
+    // console.log('Booking.com API response:', data);
     
     if (!data.status || !data.data?.hotels) {
       return NextResponse.json({ hotels: [] });
